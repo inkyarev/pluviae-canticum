@@ -9,7 +9,7 @@ public abstract class Song
     public string FilePath { get; set; } = string.Empty;
     public float Volume { get; set; } = 1f;
     [TomlNonSerialized]
-    public virtual int FadeOutPreviousMS { get; set; } = 250;
+    public virtual int FadeOutMS { get; set; } = 250;
     [TomlNonSerialized]
     public virtual int FadeInMS { get; set; } = 250;
 

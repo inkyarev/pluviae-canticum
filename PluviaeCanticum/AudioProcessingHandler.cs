@@ -242,18 +242,7 @@ public class AudioProcessingHandler
     {
         if (song.Name != _currentSong.Name)
         {
-            _currentSong = song;
-
             _audioFileReader = new AudioFileReader(song.FilePath);
-
-            if (AffectedByMasterVolume)
-            {
-                _audioFileReader.Volume = MasterVolume * MusicVolume * song.Volume;
-            }
-            else
-            {
-                _audioFileReader.Volume = MusicVolume * song.Volume;
-            }
 
             var shouldLoop = ShouldLoop;
             if (PluviaeCanticumPlugin.CurrentBoss.Phase == -1 || PluviaeCanticumPlugin.CurrentTeleporterState is TeleporterState.FinishedCharging)
@@ -267,17 +256,32 @@ public class AudioProcessingHandler
             
             var crushed = new FilterSampleProvider(_audioFileReader, highPassFilter);
             var volumeBoosted = new VolumeSampleProvider(crushed) { Volume = 1.5f }; // compensate for filter
-            _crushedFadeProvider = new FadeInOutSampleProvider(volumeBoosted);
             
             if (_outputDevice.PlaybackState is PlaybackState.Playing)
             {
-                _fadeProvider.BeginFadeOut(song.FadeOutPreviousMS);
-                Thread.Sleep(song.FadeOutPreviousMS);
-                _outputDevice.Stop();
+                _crushedFadeProvider.BeginFadeOut(_currentSong.FadeOutMS);
+                _fadeProvider.BeginFadeOut(_currentSong.FadeOutMS);
+                Thread.Sleep(_currentSong.FadeOutMS);
                 _outputDevice.Dispose();
                 Thread.Sleep(song.SilenceMS);
             }
+            else
+            {
+                _outputDevice.Dispose();
+            }
             
+            if (AffectedByMasterVolume)
+            {
+                _audioFileReader.Volume = MasterVolume * MusicVolume * song.Volume;
+            }
+            else
+            {
+                _audioFileReader.Volume = MusicVolume * song.Volume;
+            }
+            
+            _currentSong = song;
+            
+            _crushedFadeProvider = new FadeInOutSampleProvider(volumeBoosted);
             _fadeProvider = new FadeInOutSampleProvider(new WaveToSampleProvider(loopStream), true);
             _mixingSampleProvider = new MixingSampleProvider(new[] { _fadeProvider });
             

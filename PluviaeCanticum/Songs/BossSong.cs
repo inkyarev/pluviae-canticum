@@ -4,7 +4,7 @@ public class BossSong : Song
 {
     public string BossName { get; set; }
     public int PhasePlayedAt { get; set; }
-    public override int FadeOutPreviousMS { get; set; } = 250;
+    public override int FadeOutMS { get; set; } = 250;
     public override int FadeInMS { get; set; } = 250;
     public override int SilenceMS { get; set; } = 0;
     
