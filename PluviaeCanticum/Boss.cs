@@ -10,6 +10,5 @@ public class Boss
     public static readonly Boss FalseSon = new() { Name = "False Son" };
     public static readonly Boss Voidling = new() { Name = "Voidling" };
     public string Name { get; private set; } = string.Empty;
-    [TomlNonSerialized]
     public int Phase { get; set; }
 }

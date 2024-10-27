@@ -27,7 +27,6 @@ public class PluviaeCanticumPlugin : BaseUnityPlugin
     // ReSharper disable MemberCanBePrivate.Global
     public static ConfigEntry<float> MusicVolume { get; set; }
     public static ConfigEntry<bool> AffectedByMasterVolume { get; set; }
-    public static ConfigEntry<bool> ShouldLoop { get; set; }
 
     // ReSharper restore MemberCanBePrivate.Global
 
@@ -46,9 +45,6 @@ public class PluviaeCanticumPlugin : BaseUnityPlugin
         
         AffectedByMasterVolume = Config.Bind("Settings", "Affected By Master Volume", true, "Whether the music volume is multiplied by the in-game master volume.");
         ModSettingsManager.AddOption(new CheckBoxOption(AffectedByMasterVolume));
-        
-        ShouldLoop = Config.Bind("Settings", "Should Loop", true, "Whether tracks should loop. If false, another track is selected from scene matches. \nWARNING: Updates only when a new track is selected.");
-        ModSettingsManager.AddOption(new CheckBoxOption(ShouldLoop));
         #endregion
 
         _audioProcessingHandler = new AudioProcessingHandler();

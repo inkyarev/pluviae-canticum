@@ -42,7 +42,6 @@ public class AudioProcessingHandler
 
     private float MusicVolume { get; set; }
     private bool AffectedByMasterVolume { get; set; }
-    private  bool ShouldLoop { get; set; }
     public float MasterVolume
     {
         get => _masterVolume;
@@ -67,11 +66,6 @@ public class AudioProcessingHandler
         {
             AffectedByMasterVolume = ((ConfigEntry<bool>)sender).Value;
             UpdateVolume();
-        };
-        ShouldLoop = PluviaeCanticumPlugin.ShouldLoop.Value;
-        PluviaeCanticumPlugin.ShouldLoop.SettingChanged += (sender, _) =>
-        {
-            ShouldLoop = ((ConfigEntry<bool>)sender).Value;
         };
         #endregion
 
@@ -193,14 +187,10 @@ public class AudioProcessingHandler
             
             if(_audioFileReader is null) continue;
             
-            if (_audioFileReader.Position >= _audioFileReader.Length && !ShouldLoop) 
+            if (_audioFileReader.Position >= _audioFileReader.Length && !_currentTrack.ShouldLoop) 
             {
                 _outputDevice.Stop();
                 _audioFileReader.Position = _audioFileReader.Length - 1;
-                if (_currentTrack is SceneTrack sceneTrack && sceneTrack.ScenesPlayedAt.Any(scene => scene is "outro" or "loadingbasic"))
-                {
-                    continue;
-                }
                 PickTrack();
             }
         }
@@ -246,8 +236,8 @@ public class AudioProcessingHandler
         {
             _audioFileReader = new AudioFileReader(track.FilePath);
 
-            var shouldLoop = ShouldLoop;
-            if (PluviaeCanticumPlugin.CurrentBoss.Phase == -1 || PluviaeCanticumPlugin.CurrentTeleporterState is TeleporterState.FinishedCharging)
+            var shouldLoop = track.ShouldLoop;
+            if (PluviaeCanticumPlugin.CurrentTeleporterState is TeleporterState.FinishedCharging)
             {
                 shouldLoop = false;
             }
