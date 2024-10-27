@@ -1,8 +1,8 @@
 ﻿using Tomlet.Attributes;
 
-namespace PluviaeCanticum.Songs;
+namespace PluviaeCanticum.Tracks;
 
-public abstract class Song
+public abstract class Track
 {
     public string Name { get; set; } = string.Empty;
     [TomlNonSerialized]
@@ -18,5 +18,5 @@ public abstract class Song
 
     public abstract bool MatchesConditions();
 
-    public abstract string GetSelectingSongString();
+    public abstract string GetSelectingTrackString();
 }

@@ -7,7 +7,7 @@ using BepInEx.Configuration;
 using NAudio.Dsp;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using PluviaeCanticum.Songs;
+using PluviaeCanticum.Tracks;
 using Tomlet;
 using System.Collections.Concurrent;
 using System.Threading;
@@ -21,7 +21,7 @@ public class AudioProcessingHandler
     private bool _isRunning;
 
     #region Signals
-    public AutoResetEvent PickSongRequestSignal { get; } = new(false);
+    public AutoResetEvent PickTrackRequestSignal { get; } = new(false);
     
     public AutoResetEvent PausedEventSignal { get; } = new(false);
     public AutoResetEvent UnPausedEventSignal { get; } = new(false);
@@ -35,7 +35,7 @@ public class AudioProcessingHandler
     private readonly Settings _settings;
     private WaveOutEvent _outputDevice;
     private readonly Random _random = new();
-    private Song _currentSong = new SceneSong();
+    private Track _currentTrack = new SceneTrack();
     private FadeInOutSampleProvider _crushedFadeProvider;
     private FadeInOutSampleProvider _fadeProvider;
     private AudioFileReader _audioFileReader;
@@ -86,27 +86,27 @@ public class AudioProcessingHandler
         
         #region Parse settings
         var pluginPath = Path.Combine(Paths.PluginPath, "PluviaeCanticum");
-        var songsPath = Path.Combine(pluginPath, "Songs");
+        var tracksPath = Path.Combine(pluginPath, "Tracks");
         var settingsPath = Path.Combine(pluginPath, "settings.toml");
         
         try
         {
             var tomlString = File.ReadAllText(settingsPath);
             _settings = TomletMain.To<Settings>(tomlString);
-            _settings.Songs = _settings.SceneSongs.Concat<Song>(_settings.TeleporterSongs).Concat(_settings.BossSongs).ToArray();
+            _settings.Tracks = _settings.SceneTracks.Concat<Track>(_settings.TeleporterTracks).Concat(_settings.BossTracks).ToArray();
             
-            if (_settings.CustomSongsPath != string.Empty)
+            if (_settings.CustomTracksPath != string.Empty)
             {
-                songsPath = _settings.CustomSongsPath;
+                tracksPath = _settings.CustomTracksPath;
             }
 
-            var audioFiles = Utils.SearchForAudioFiles(songsPath);
+            var audioFiles = Utils.SearchForAudioFiles(tracksPath);
             
-            foreach (var song in _settings.Songs)
+            foreach (var track in _settings.Tracks)
             {
-                if (!song.ExistsWithin(audioFiles))
+                if (!track.ExistsWithin(audioFiles))
                 {
-                    Log.Error($"Found no file for song {song.Name}. This song will not be played.");
+                    Log.Error($"Found no file for track {track.Name}. This track will not be played.");
                 }
             }
         } 
@@ -140,9 +140,9 @@ public class AudioProcessingHandler
         {
             if (_outputDevice is null) continue;
             
-            if (PickSongRequestSignal.WaitOne(0))
+            if (PickTrackRequestSignal.WaitOne(0))
             {
-                PickSong();
+                PickTrack();
                 if (PluviaeCanticumPlugin.CurrentBoss.Phase == -1)
                 {
                     PluviaeCanticumPlugin.CurrentBoss = Boss.None;
@@ -203,46 +203,46 @@ public class AudioProcessingHandler
             {
                 _outputDevice.Stop();
                 _audioFileReader.Position = _audioFileReader.Length - 1;
-                if (_currentSong is SceneSong sceneSong && sceneSong.ScenesPlayedAt.Any(scene => scene is "outro" or "loadingbasic"))
+                if (_currentTrack is SceneTrack sceneTrack && sceneTrack.ScenesPlayedAt.Any(scene => scene is "outro" or "loadingbasic"))
                 {
                     continue;
                 }
-                PickSong();
+                PickTrack();
             }
         }
     }
     
     
-    private void PickSong()
+    private void PickTrack()
     {
-        var songChoices = _settings.Songs.Where(song => song.MatchesConditions()).ToArray();
+        var trackChoices = _settings.Tracks.Where(track => track.MatchesConditions()).ToArray();
         
-        Song chosenSong;
-        if (songChoices.Length > 0)
+        Track chosenTrack;
+        if (trackChoices.Length > 0)
         {
-            var songChoicesNames = songChoices
-                .Aggregate(string.Empty, (str, song) => str + ('\n' + song.Name));
+            var trackChoicesNames = trackChoices
+                .Aggregate(string.Empty, (str, track) => str + ('\n' + track.Name));
             Log.Message($"""
-                             Selecting song;
-                             {songChoices[0].GetSelectingSongString()};
-                             Choices: {songChoicesNames}.
+                             Selecting track;
+                             {trackChoices[0].GetSelectingTrackString()};
+                             Choices: {trackChoicesNames}.
                              """);
-            chosenSong = songChoices[_random.Next(songChoices.Length)];
+            chosenTrack = trackChoices[_random.Next(trackChoices.Length)];
         }
         else
         {
-            Log.Error("Song pick failed. No song will be played.");
+            Log.Error("Track pick failed. No track will be played.");
             return;
         }
         
-        PlaySong(chosenSong);
+        PlayTrack(chosenTrack);
     }
     
-    private void PlaySong(Song song)
+    private void PlayTrack(Track track)
     {
-        if (song.Name != _currentSong.Name)
+        if (track.Name != _currentTrack.Name)
         {
-            _audioFileReader = new AudioFileReader(song.FilePath);
+            _audioFileReader = new AudioFileReader(track.FilePath);
 
             var shouldLoop = ShouldLoop;
             if (PluviaeCanticumPlugin.CurrentBoss.Phase == -1 || PluviaeCanticumPlugin.CurrentTeleporterState is TeleporterState.FinishedCharging)
@@ -259,11 +259,11 @@ public class AudioProcessingHandler
             
             if (_outputDevice.PlaybackState is PlaybackState.Playing)
             {
-                _crushedFadeProvider.BeginFadeOut(_currentSong.FadeOutMS);
-                _fadeProvider.BeginFadeOut(_currentSong.FadeOutMS);
-                Thread.Sleep(_currentSong.FadeOutMS);
+                _crushedFadeProvider.BeginFadeOut(_currentTrack.FadeOutMS);
+                _fadeProvider.BeginFadeOut(_currentTrack.FadeOutMS);
+                Thread.Sleep(_currentTrack.FadeOutMS);
                 _outputDevice.Dispose();
-                Thread.Sleep(song.SilenceMS);
+                Thread.Sleep(track.SilenceMS);
             }
             else
             {
@@ -272,14 +272,14 @@ public class AudioProcessingHandler
             
             if (AffectedByMasterVolume)
             {
-                _audioFileReader.Volume = MasterVolume * MusicVolume * song.Volume;
+                _audioFileReader.Volume = MasterVolume * MusicVolume * track.Volume;
             }
             else
             {
-                _audioFileReader.Volume = MusicVolume * song.Volume;
+                _audioFileReader.Volume = MusicVolume * track.Volume;
             }
             
-            _currentSong = song;
+            _currentTrack = track;
             
             _crushedFadeProvider = new FadeInOutSampleProvider(volumeBoosted);
             _fadeProvider = new FadeInOutSampleProvider(new WaveToSampleProvider(loopStream), true);
@@ -289,13 +289,13 @@ public class AudioProcessingHandler
             _outputDevice.Init(_mixingSampleProvider);
             
             _outputDevice.Play();
-            _fadeProvider.BeginFadeIn(song.FadeInMS);
+            _fadeProvider.BeginFadeIn(track.FadeInMS);
 
-            Log.Message($"Now Playing: {song.Name}.");
+            Log.Message($"Now Playing: {track.Name}.");
         }
         else
         {
-            Log.Message($"Already playing: {song.Name}.");
+            Log.Message($"Already playing: {track.Name}.");
         }
     }
     
@@ -305,11 +305,11 @@ public class AudioProcessingHandler
         
         if (AffectedByMasterVolume)
         {
-            _audioFileReader.Volume = MasterVolume * MusicVolume * _currentSong.Volume;
+            _audioFileReader.Volume = MasterVolume * MusicVolume * _currentTrack.Volume;
         }
         else
         {
-            _audioFileReader.Volume = MusicVolume * _currentSong.Volume;
+            _audioFileReader.Volume = MusicVolume * _currentTrack.Volume;
         }
     }
 }

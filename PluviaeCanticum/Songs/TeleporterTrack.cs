@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using UnityEngine.SceneManagement;
 
-namespace PluviaeCanticum.Songs;
+namespace PluviaeCanticum.Tracks;
 
-public class TeleporterSong : SceneSong
+public class TeleporterTrack : SceneTrack
 {
     public TeleporterState TeleporterStatePlayedAt { get; set; }
     public override bool MatchesConditions()
@@ -14,7 +14,7 @@ public class TeleporterSong : SceneSong
                PluviaeCanticumPlugin.CurrentTeleporterState == TeleporterStatePlayedAt;
     }
     
-    public override string GetSelectingSongString()
+    public override string GetSelectingTrackString()
     {
         return TeleporterStatePlayedAt switch
         {

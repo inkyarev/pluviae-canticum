@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using System;
 using BepInEx.Configuration;
 using On.RoR2.UI;
-using PluviaeCanticum.Songs;
+using PluviaeCanticum.Tracks;
 using RiskOfOptions;
 using RiskOfOptions.Options;
 
@@ -48,7 +48,7 @@ public class PluviaeCanticumPlugin : BaseUnityPlugin
         AffectedByMasterVolume = Config.Bind("Settings", "Affected By Master Volume", true, "Whether the music volume is multiplied by the in-game master volume.");
         ModSettingsManager.AddOption(new CheckBoxOption(AffectedByMasterVolume));
         
-        ShouldLoop = Config.Bind("Settings", "Should Loop", true, "Whether songs should loop. If false, another song is selected from scene matches. \nWARNING: Updates only when a new song is selected.");
+        ShouldLoop = Config.Bind("Settings", "Should Loop", true, "Whether tracks should loop. If false, another track is selected from scene matches. \nWARNING: Updates only when a new track is selected.");
         ModSettingsManager.AddOption(new CheckBoxOption(ShouldLoop));
         #endregion
 
@@ -74,13 +74,13 @@ public class PluviaeCanticumPlugin : BaseUnityPlugin
         {
             orig(self, activator);
             CurrentTeleporterState = TeleporterState.Charging;
-            _audioProcessingHandler.PickSongRequestSignal.Set();
+            _audioProcessingHandler.PickTrackRequestSignal.Set();
         };
         On.RoR2.TeleporterInteraction.AttemptToSpawnAllEligiblePortals += (orig, self) =>
         {
             orig(self);
             CurrentTeleporterState = TeleporterState.FinishedCharging;
-            _audioProcessingHandler.PickSongRequestSignal.Set();
+            _audioProcessingHandler.PickTrackRequestSignal.Set();
         };
         On.RoR2.TeleporterInteraction.FixedUpdate += (orig, self) =>
         {
@@ -102,35 +102,35 @@ public class PluviaeCanticumPlugin : BaseUnityPlugin
             orig(self);
             CurrentBoss = Boss.Mithrix;
             CurrentBoss.Phase = 1;
-            _audioProcessingHandler.PickSongRequestSignal.Set();
+            _audioProcessingHandler.PickTrackRequestSignal.Set();
         };
         On.EntityStates.Missions.BrotherEncounter.Phase2.OnEnter += (orig, self) =>
         {
             orig(self);
             CurrentBoss = Boss.Mithrix;
             CurrentBoss.Phase = 2;
-            _audioProcessingHandler.PickSongRequestSignal.Set();
+            _audioProcessingHandler.PickTrackRequestSignal.Set();
         };
         On.EntityStates.Missions.BrotherEncounter.Phase3.OnEnter += (orig, self) =>
         {
             orig(self);
             CurrentBoss = Boss.Mithrix;
             CurrentBoss.Phase = 3;
-            _audioProcessingHandler.PickSongRequestSignal.Set();
+            _audioProcessingHandler.PickTrackRequestSignal.Set();
         };
         On.EntityStates.Missions.BrotherEncounter.Phase4.OnEnter += (orig, self) =>
         {
             orig(self);
             CurrentBoss = Boss.Mithrix;
             CurrentBoss.Phase = 4;
-            _audioProcessingHandler.PickSongRequestSignal.Set();
+            _audioProcessingHandler.PickTrackRequestSignal.Set();
         };
         On.EntityStates.Missions.BrotherEncounter.BossDeath.OnEnter += (orig, self) =>
         {
             orig(self);
             CurrentBoss = Boss.Mithrix;
             CurrentBoss.Phase = -1;
-            _audioProcessingHandler.PickSongRequestSignal.Set();
+            _audioProcessingHandler.PickTrackRequestSignal.Set();
         };
         #endregion
 
@@ -140,28 +140,28 @@ public class PluviaeCanticumPlugin : BaseUnityPlugin
             orig(self);
             CurrentBoss = Boss.FalseSon;
             CurrentBoss.Phase = 1;
-            _audioProcessingHandler.PickSongRequestSignal.Set();
+            _audioProcessingHandler.PickTrackRequestSignal.Set();
         };
         On.EntityStates.FalseSonBoss.CrystalDeathState.PlayDeathAnimation += (orig, self, duration) =>
         {
             orig(self, duration);
             CurrentBoss = Boss.FalseSon;
             CurrentBoss.Phase = 2;
-            _audioProcessingHandler.PickSongRequestSignal.Set();
+            _audioProcessingHandler.PickTrackRequestSignal.Set();
         };
         On.EntityStates.FalseSonBoss.BrokenCrystalDeathState.PlayDeathAnimation += (orig, self, duration) =>
         {
             orig(self, duration);
             CurrentBoss = Boss.FalseSon;
             CurrentBoss.Phase = 3;
-            _audioProcessingHandler.PickSongRequestSignal.Set();
+            _audioProcessingHandler.PickTrackRequestSignal.Set();
         };
         On.RoR2.MeridianEventTriggerInteraction.RpcOnFalseSonDefeated += (orig, self) =>
         {
             orig(self);
             CurrentBoss = Boss.FalseSon;
             CurrentBoss.Phase = -1;
-            _audioProcessingHandler.PickSongRequestSignal.Set();
+            _audioProcessingHandler.PickTrackRequestSignal.Set();
         };
         #endregion
 
@@ -170,7 +170,7 @@ public class PluviaeCanticumPlugin : BaseUnityPlugin
         {
             CurrentBoss = Boss.Voidling;
             CurrentBoss.Phase = phase;
-            _audioProcessingHandler.PickSongRequestSignal.Set();
+            _audioProcessingHandler.PickTrackRequestSignal.Set();
         };
         #endregion
 
@@ -179,7 +179,7 @@ public class PluviaeCanticumPlugin : BaseUnityPlugin
         {
             CurrentTeleporterState = TeleporterState.None;
             CurrentBoss = Boss.None;
-            _audioProcessingHandler.PickSongRequestSignal.Set();
+            _audioProcessingHandler.PickTrackRequestSignal.Set();
         };
         #endregion
     }

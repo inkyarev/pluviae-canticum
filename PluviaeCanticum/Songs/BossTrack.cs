@@ -1,6 +1,6 @@
-﻿namespace PluviaeCanticum.Songs;
+﻿namespace PluviaeCanticum.Tracks;
 
-public class BossSong : Song
+public class BossTrack : Track
 {
     public string BossName { get; set; }
     public int PhasePlayedAt { get; set; }
@@ -15,7 +15,7 @@ public class BossSong : Song
                PluviaeCanticumPlugin.CurrentBoss.Phase == PhasePlayedAt;
     }
 
-    public override string GetSelectingSongString()
+    public override string GetSelectingTrackString()
     {
         return PhasePlayedAt switch
         {

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
-using PluviaeCanticum.Songs;
+using PluviaeCanticum.Tracks;
 
 namespace PluviaeCanticum;
 
@@ -15,13 +15,13 @@ public static class Utils
         return files.Where(file => file.Extension is ".mp3" or ".wav").ToArray();
     }
     
-    public static bool ExistsWithin(this Song song, FileInfo[] audioFiles)
+    public static bool ExistsWithin(this Track track, FileInfo[] audioFiles)
     {
         foreach (var file in audioFiles)
         {
-            if (song.Name == file.Name)
+            if (track.Name == file.Name)
             {
-                song.FilePath = file.FullName;
+                track.FilePath = file.FullName;
                 return true;
             }
         }

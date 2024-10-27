@@ -1,16 +1,16 @@
-﻿using PluviaeCanticum.Songs;
+﻿using PluviaeCanticum.Tracks;
 using Tomlet.Attributes;
 
 namespace PluviaeCanticum;
 
 public class Settings
 {
-    public string CustomSongsPath { get; set; } = string.Empty;
+    public string CustomTracksPath { get; set; } = string.Empty;
 
     [TomlNonSerialized] 
-    public Song[] Songs { get; set; } = [];
+    public Track[] Tracks { get; set; } = [];
 
-    public SceneSong[] SceneSongs { get; set; } = [];
-    public TeleporterSong[] TeleporterSongs { get; set; } = [];
-    public BossSong[] BossSongs { get; set; } = [];
+    public SceneTrack[] SceneTracks { get; set; } = [];
+    public TeleporterTrack[] TeleporterTracks { get; set; } = [];
+    public BossTrack[] BossTracks { get; set; } = [];
 }

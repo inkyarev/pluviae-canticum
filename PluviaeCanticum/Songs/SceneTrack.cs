@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using UnityEngine.SceneManagement;
 
-namespace PluviaeCanticum.Songs;
+namespace PluviaeCanticum.Tracks;
 
-public class SceneSong : Song
+public class SceneTrack : Track
 {
     public string[] ScenesPlayedAt { get; set; } = [];
 
@@ -15,7 +15,7 @@ public class SceneSong : Song
                PluviaeCanticumPlugin.CurrentTeleporterState == TeleporterState.None;
     }
 
-    public override string GetSelectingSongString()
+    public override string GetSelectingTrackString()
     {
         return $"Transitioned to '{SceneManager.GetActiveScene().name}' scene";
     }
