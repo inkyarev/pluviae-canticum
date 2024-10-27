@@ -10,11 +10,10 @@ This is a fork of a RoR2 mod [OriginalSoundTrack](https://github.com/kylepaulsen
 - Boss tracks
   - Support for Voidling and False Son
   - Can now set tracks to individual phases (including on-death)
-  - Adjustable fade-in, fade-out and silence-before-track (Also applies to regular tracks, but mostly used for boss tracks)
+  - Adjustable fade-in, fade-out and silence-before-track (also applies to regular tracks, but mostly used for boss tracks)
 - Risk of Options support for changing these options:
   - Music volume
   - Whether the music volume should be affected by the master volume
-  - Whether the tracks should loop
 - Improved config readability by switching from .xml to .toml
 - Moved all processing to its own thread, so that it doesn't affect game performance.
 
@@ -22,7 +21,7 @@ I made this because the original mod was made before any DLCs and therefore was 
 
 ## Setup and use
 
-WIP
+Install the mod, then open settings.toml. It should contain info needed for using this mod.
 
 ## Other Info
 

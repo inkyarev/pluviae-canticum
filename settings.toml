@@ -1,0 +1,394 @@
+# This file is where you define your tracks for use with the mod.
+# All tracks go into the Tracks folder next to the mod.
+
+# In order to add a track you first need to declare what kind of track it is.
+# [[SceneTrack]] - track that plays during stages
+# [[TeleporterTrack]] - track that plays during the teleporter on those stages
+# [[BossTrack]] - track that plays during a bossfight (Mithrix, Voidling or False Son)
+
+# Then you can declare the individual properties of each track. 
+# Order in which you declare them doesn't matter. All properties should start on a new line.
+
+# Every track has these properties:
+# Name - the name of the file to the track with file extension.
+# Volume - the individual volume of a track. gets multiplied by any other volumes(master, music). it is a float between 0.0 and 1.0
+# SilenceMS - how many milliseconds should nothing play before this track starts. 
+# FadeInMS - how many milliseconds should the track fade in for.
+# FadeOutMS - how many milliseconds should the track fade out for.
+
+# Scene tracks have an extra property:
+# ScenesPlayedAt - a list of scene names where this track should be played. you can look up scene names on the modding wiki (https://risk-of-thunder.github.io/R2Wiki/Mod-Creation/Developer-Reference/Scene-Names/)
+
+# Teleporter tracks have all the properties of a SceneTrack and also:
+# StatePlayedAt - state of the teleporter at which this track should be played. possible values are: Charging, FinishedCharging
+
+# Boss tracks have two extra properties:
+# BossName - name of the boss at whose fight this track should be played. possible values are: Mithrix, Voidling, False Son
+# PhasePlayedAt - phase of the boss at which this track should be played. 
+# Mithrix has 4 phases, Voidling has 3 phases, False Son has 3 phases.
+# Each boss has an extra phase under the number -1 that is considered the DeathPhase. It triggers when a boss dies.
+
+# You can define different types of tracks in any order. 
+# If you defined multiple tracks that share a scene or more, then these tracks will have a random chance to play when you enter that scene. 
+# You CAN define a TeleporterTrack and a SceneTrack that share a scene.
+# Below is a config template that, if provided the audio files, would be nearly identical to vanilla. There are no files.. yet.
+# In order to use the template, uncomment it by removing the double hash sings (##). You could use a replace tool that's available even in notepad.
+
+# Custom path to the tracks you would be using instead of the default PluviaeCanticum/Tracks
+CustomTracksPath = ""
+
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "blackbeach", "blackbeach2" ]
+##Name = "Evapotranspiration.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "goolake", "dampcavesimple", "itdampcave", "itgoolake" ]
+##Name = "Terra Pluviam.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "golemplains", "golemplains2", "wispgraveyard", "itgolemplains" ]
+##Name = "Disdrometer.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "frozenwall", "goldshores", "itfrozenwall" ]
+##Name = "Into the Doldrums.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "arena" ]
+##Name = "A Glacier Eventually Farts (And Don't You Listen to the Song of Life).mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "foggyswamp" ]
+##Name = "Nocturnal Emission.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "bazaar" ]
+##Name = "Parjanya.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "skymeadow", "itskymeadow" ]
+##Name = "The Rain Formerly Known as Purple.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "shipgraveyard", "artifactworld", "artifactworld01", "artifactworld02", "artifactworld03" ]
+##Name = "The Raindrop that Fell to the Sky.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "moon2", "itmoon" ]
+##Name = "…con lentitud poderosa.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "mysteryspace", "limbo" ]
+##Name = "Petrichor V.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "voidstage", "voidraid" ]
+##Name = "A Placid Island of Ignorance.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "snowyforest" ]
+##Name = "Out of Whose Womb Came the Ice_.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "ancientloft" ]
+##Name = "Once in a Lullaby.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "rootjungle" ]
+##Name = "They Might As Well Be Dead.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "sulfurpools", "itancientloft" ]
+##Name = "Who Can Fathom the Soundless Depths.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "lakes", "lakesnight" ]
+##Name = "It Can't Rain All the Time.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "village", "villagenight" ]
+##Name = "I Should Build the Man a Statue.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "helminthroost" ]
+##Name = "屋根の漏り (Yane No Mori).mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "lemuriantemple" ]
+##Name = "Oṃ Maṇi Padme Hūṃ, part III.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "habitat", "habitatfall" ]
+##Name = "Oṃ Maṇi Padme Hūṃ, part II.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "meridian" ]
+##Name = "Oṃ Maṇi Padme Hūṃ part I Prime Meridian Loop.mp3"
+##Volume = 1
+##FadeOutMS = 1000
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = [ "golemplains", "golemplains2", "blackbeach", "blackbeach2", "goolake" ]
+##Name = "Thermodynamic Equilibrium.mp3"
+##Volume = 1
+##StatePlayedAt = "Charging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = [ "golemplains", "golemplains2", "blackbeach", "blackbeach2", "goolake" ]
+##Name = "Thermodynamic Equilibrium.mp3"
+##ShouldLoop = false
+##Volume = 1
+##StatePlayedAt = "FinishedCharging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = [ "foggyswamp", "wispgraveyard", "shipgraveyard" ]
+##Name = "Köppen As Fuck.mp3"
+##Volume = 1
+##StatePlayedAt = "Charging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = [ "foggyswamp", "wispgraveyard", "shipgraveyard" ]
+##Name = "Köppen As Fuck.mp3"
+##ShouldLoop = false
+##Volume = 1
+##StatePlayedAt = "FinishedCharging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = [ "frozenwall", "dampcavesimple", "rootjungle" ]
+##Name = "Hydrophobia.mp3"
+##Volume = 1
+##StatePlayedAt = "Charging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = [ "frozenwall", "dampcavesimple", "rootjungle" ]
+##Name = "Hydrophobia.mp3"
+##ShouldLoop = false
+##Volume = 1
+##StatePlayedAt = "FinishedCharging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = [ "skymeadow" ]
+##Name = "Antarctic Oscillation.mp3"
+##Volume = 1
+##StatePlayedAt = "Charging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = [ "skymeadow" ]
+##Name = "Antarctic Oscillation.mp3"
+##ShouldLoop = false
+##Volume = 1
+##StatePlayedAt = "FinishedCharging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = [ "snowyforest", "ancientloft" ]
+##Name = "Having Fallen, It Was Blood.mp3"
+##Volume = 1
+##StatePlayedAt = "Charging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = [ "snowyforest", "ancientloft" ]
+##Name = "Having Fallen, It Was Blood.mp3"
+##ShouldLoop = false
+##Volume = 1
+##StatePlayedAt = "FinishedCharging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = [ "sulfurpools" ]
+##Name = "A Boat Made from a Sheet of Newspaper.mp3"
+##Volume = 1
+##StatePlayedAt = "Charging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = [ "sulfurpools" ]
+##Name = "A Boat Made from a Sheet of Newspaper.mp3"
+##ShouldLoop = false
+##Volume = 1
+##StatePlayedAt = "FinishedCharging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = [ "lakes", "lakesnight", "habitat", "habitatfall" ]
+##Name = "A Tempestuous Noise of Thunder and Lightning Heard.mp3"
+##Volume = 1
+##StatePlayedAt = "Charging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = [ "lakes", "lakesnight", "habitat", "habitatfall" ]
+##Name = "A Tempestuous Noise of Thunder and Lightning Heard.mp3"
+##ShouldLoop = false
+##Volume = 1
+##StatePlayedAt = "FinishedCharging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = [ "helminthroost" ]
+##Name = "Tlālōcān.mp3"
+##Volume = 1
+##StatePlayedAt = "Charging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = [ "helminthroost" ]
+##Name = "Tlālōcān.mp3"
+##ShouldLoop = false
+##Volume = 1
+##StatePlayedAt = "FinishedCharging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = ["village", "villagenight", "lemuriantemple" ]
+##Name = "Forgot the Cry of Gulls.mp3"
+##Volume = 1
+##StatePlayedAt = "Charging"
+##
+##[[TeleporterTrack]]
+##ScenesPlayedAt = ["village", "villagenight", "lemuriantemple" ]
+##Name = "Forgot the Cry of Gulls.mp3"
+##ShouldLoop = false
+##Volume = 1
+##StatePlayedAt = "FinishedCharging"
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "splash", "intro" ]
+##Name = "Through a Cloud, Darkly.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "title" ]
+##Name = "Risk of Rain 2.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "logbook", "lobby", "crystalworld", "eclipseworld" ]
+##Name = "The Dehydration of Risk of Rain 2.mp3"
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "outro" ]
+##Name = "Lacrimosum.mp3"
+##ShouldLoop = false
+##Volume = 1
+##
+##[[SceneTrack]]
+##ScenesPlayedAt = [ "infinitetowerworld" ]
+##Name = "Prelude in D-Flat Major.mp3"
+##Volume = 1
+##
+##[[BossTrack]]
+##Name = "You're Gonna Need a Bigger Ukulele Phase 1.mp3"
+##BossName = "Mithrix"
+##PhasePlayedAt = 1
+##Volume = 1
+##SilenceMS = 3000
+##FadeInMS = 0
+##
+##[[BossTrack]]
+##Name = "You're Gonna Need a Bigger Ukulele Phase 2.mp3"
+##BossName = "Mithrix"
+##PhasePlayedAt = 2
+##Volume = 1
+##
+##[[BossTrack]]
+##Name = "You're Gonna Need a Bigger Ukulele Phase 3.mp3"
+##BossName = "Mithrix"
+##PhasePlayedAt = 3
+##Volume = 1
+##SilenceMS = 750
+##FadeInMS = 0
+##
+##[[BossTrack]]
+##Name = "You're Gonna Need a Bigger Ukulele Phase 4.mp3"
+##BossName = "Mithrix"
+##PhasePlayedAt = 4
+##Volume = 1
+##
+##[[BossTrack]]
+##Name = "Moon Detonation Sequence.mp3"
+##BossName = "Mithrix"
+##PhasePlayedAt = -1
+##Volume = 1
+##SilenceMS = 9750
+##
+##[[BossTrack]]
+##Name = "Oṃ Maṇi Padme Hūṃ, part I Boss Phase 1.mp3"
+##BossName = "False Son"
+##PhasePlayedAt = 1
+##Volume = 1
+##SilenceMS = 6000
+##FadeInMS = 0
+##FadeOutMS = 4500
+##
+##[[BossTrack]]
+##Name = "Oṃ Maṇi Padme Hūṃ, part I Boss Phase 2.mp3"
+##BossName = "False Son"
+##PhasePlayedAt = 2
+##Volume = 1
+##FadeInMS = 0
+##FadeOutMS = 4500
+##
+##[[BossTrack]]
+##Name = "Oṃ Maṇi Padme Hūṃ, part I Boss Phase 3.mp3"
+##BossName = "False Son"
+##PhasePlayedAt = 3
+##Volume = 1
+##FadeInMS = 0
+##FadeOutMS = 0
+##
+##[[BossTrack]]
+##Name = "Oṃ Maṇi Padme Hūṃ, part I Boss Post Death.mp3"
+##BossName = "False Son"
+##PhasePlayedAt = -1
+##ShouldLoop = false
+##Volume = 1
+##FadeInMS = 0
+##
+##[[BossTrack]]
+##Name = "The Face of the Deep Phase 1.mp3"
+##BossName = "Voidling"
+##PhasePlayedAt = 1
+##Volume = 1
+##SilenceMS = 750
+##FadeInMS = 0
+##FadeOutMS = 125
+##
+##[[BossTrack]]
+##Name = "The Face of the Deep Phase 2.mp3"
+##BossName = "Voidling"
+##PhasePlayedAt = 2
+##Volume = 1
+##FadeInMS = 125
+##FadeOutMS = 125
+##
+##[[BossTrack]]
+##Name = "The Face of the Deep Phase 3.mp3"
+##BossName = "Voidling"
+##PhasePlayedAt = 3
+##Volume = 1
+##FadeInMS = 125
+##FadeOutMS = 0
+##
+##[[BossTrack]]
+##Name = "The Face of the Deep Post Death.mp3"
+##BossName = "Voidling"
+##PhasePlayedAt = -1
+##ShouldLoop = false
+##Volume = 1
+##FadeInMS = 0
+##FadeOutMS = 0
