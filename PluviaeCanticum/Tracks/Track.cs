@@ -4,6 +4,8 @@ namespace PluviaeCanticum.Tracks;
 
 public abstract class Track
 {
+    public static Track None => new SceneTrack();
+    
     public string Name { get; set; } = string.Empty;
     [TomlNonSerialized]
     public string FilePath { get; set; } = string.Empty;

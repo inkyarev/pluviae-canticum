@@ -10,7 +10,10 @@ public class Settings
     [TomlNonSerialized] 
     public Track[] Tracks { get; set; } = [];
 
+    [TomlProperty("SceneTrack")]
     public SceneTrack[] SceneTracks { get; set; } = [];
+    [TomlProperty("TeleporterTrack")]
     public TeleporterTrack[] TeleporterTracks { get; set; } = [];
+    [TomlProperty("BossTrack")]
     public BossTrack[] BossTracks { get; set; } = [];
 }

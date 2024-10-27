@@ -5,18 +5,18 @@ namespace PluviaeCanticum.Tracks;
 
 public class TeleporterTrack : SceneTrack
 {
-    public TeleporterState TeleporterStatePlayedAt { get; set; }
+    public TeleporterState StatePlayedAt { get; set; }
     public override bool MatchesConditions()
     {
         return FilePath != string.Empty && 
                ScenesPlayedAt.Any(scene => scene == SceneManager.GetActiveScene().name) &&
                PluviaeCanticumPlugin.CurrentBoss.Equals(Boss.None) &&
-               PluviaeCanticumPlugin.CurrentTeleporterState == TeleporterStatePlayedAt;
+               PluviaeCanticumPlugin.CurrentTeleporterState == StatePlayedAt;
     }
     
     public override string GetSelectingTrackString()
     {
-        return TeleporterStatePlayedAt switch
+        return StatePlayedAt switch
         {
             TeleporterState.Charging => $"Teleporter activated on '{SceneManager.GetActiveScene().name}' scene",
             TeleporterState.FinishedCharging => $"Teleporter charged on '{SceneManager.GetActiveScene().name}' scene",

@@ -10,8 +10,7 @@ using RiskOfOptions.Options;
 
 namespace PluviaeCanticum;
 
-// no idea tf this for
-[BepInDependency("com.bepis.r2api")]
+[BepInDependency(R2API.R2API.PluginGUID)]
 // this below fine tho
 [BepInDependency("com.rune580.riskofoptions")]
 [BepInPlugin(PluginGUID, PluginName, PluginVersion)]

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using BepInEx;
@@ -35,7 +34,7 @@ public class AudioProcessingHandler
     private readonly Settings _settings;
     private WaveOutEvent _outputDevice;
     private readonly Random _random = new();
-    private Track _currentTrack = new SceneTrack();
+    private Track _currentTrack = Track.None;
     private FadeInOutSampleProvider _crushedFadeProvider;
     private FadeInOutSampleProvider _fadeProvider;
     private AudioFileReader _audioFileReader;
@@ -94,6 +93,7 @@ public class AudioProcessingHandler
             var tomlString = File.ReadAllText(settingsPath);
             _settings = TomletMain.To<Settings>(tomlString);
             _settings.Tracks = _settings.SceneTracks.Concat<Track>(_settings.TeleporterTracks).Concat(_settings.BossTracks).ToArray();
+            Log.Debug("count:"+_settings.Tracks.Length);
             
             if (_settings.CustomTracksPath != string.Empty)
             {
@@ -104,10 +104,12 @@ public class AudioProcessingHandler
             
             foreach (var track in _settings.Tracks)
             {
+                Log.Debug("name:"+track.Name);
                 if (!track.ExistsWithin(audioFiles))
                 {
                     Log.Error($"Found no file for track {track.Name}. This track will not be played.");
                 }
+                Log.Debug("path: "+track.FilePath);
             }
         } 
         catch (Exception e)
@@ -176,16 +178,8 @@ public class AudioProcessingHandler
             {
                 while (ChargingStateQueue.TryDequeue(out var isChargingTeleporter))
                 {
-                    if (isChargingTeleporter)
-                    {
-                        _mixingSampleProvider.RemoveAllMixerInputs();
-                        _mixingSampleProvider.AddMixerInput(_fadeProvider);
-                    }
-                    else
-                    {
-                        _mixingSampleProvider.RemoveAllMixerInputs();
-                        _mixingSampleProvider.AddMixerInput(_crushedFadeProvider);
-                    }
+                    _mixingSampleProvider.RemoveAllMixerInputs();
+                    _mixingSampleProvider.AddMixerInput(isChargingTeleporter ? _fadeProvider : _crushedFadeProvider);
                 }
             }
             #endregion
@@ -232,6 +226,14 @@ public class AudioProcessingHandler
         else
         {
             Log.Error("Track pick failed. No track will be played.");
+            if (_outputDevice.PlaybackState is PlaybackState.Playing)
+            {
+                _crushedFadeProvider.BeginFadeOut(_currentTrack.FadeOutMS);
+                _fadeProvider.BeginFadeOut(_currentTrack.FadeOutMS);
+                Thread.Sleep(_currentTrack.FadeOutMS);
+            }
+            _outputDevice.Dispose();
+            _currentTrack = Track.None;
             return;
         }
         
@@ -254,7 +256,7 @@ public class AudioProcessingHandler
 
             var highPassFilter = BiQuadFilter.HighPassFilter(loopStream.WaveFormat.SampleRate, 500, 0.5f);
             
-            var crushed = new FilterSampleProvider(_audioFileReader, highPassFilter);
+            var crushed = new FilterSampleProvider(new WaveToSampleProvider(loopStream), highPassFilter);
             var volumeBoosted = new VolumeSampleProvider(crushed) { Volume = 1.5f }; // compensate for filter
             
             if (_outputDevice.PlaybackState is PlaybackState.Playing)
@@ -283,7 +285,7 @@ public class AudioProcessingHandler
             
             _crushedFadeProvider = new FadeInOutSampleProvider(volumeBoosted);
             _fadeProvider = new FadeInOutSampleProvider(new WaveToSampleProvider(loopStream), true);
-            _mixingSampleProvider = new MixingSampleProvider(new[] { _fadeProvider });
+            _mixingSampleProvider = new MixingSampleProvider([_fadeProvider]);
             
             _outputDevice = new WaveOutEvent();
             _outputDevice.Init(_mixingSampleProvider);
