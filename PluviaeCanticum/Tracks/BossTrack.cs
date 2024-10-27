@@ -2,8 +2,8 @@
 
 public class BossTrack : Track
 {
-    public string BossName { get; set; }
-    public int PhasePlayedAt { get; set; }
+    private string BossName { get; set; }
+    private int PhasePlayedAt { get; set; }
     
     public override bool MatchesConditions()
     {

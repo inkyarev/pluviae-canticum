@@ -11,13 +11,14 @@
 
 # Every track has these properties:
 # Name - the name of the file to the track with file extension.
-# Volume - the individual volume of a track. gets multiplied by any other volumes(master, music). it is a float between 0.0 and 1.0
-# SilenceMS - how many milliseconds should nothing play before this track starts. 
-# FadeInMS - how many milliseconds should the track fade in for.
-# FadeOutMS - how many milliseconds should the track fade out for.
+# Volume - the individual volume of a track. gets multiplied by any other volumes(master, music). it is a float between 0.0 and 1.0. default value: 1.
+# SilenceMS - how many milliseconds should nothing play before this track starts. default value: 0.
+# FadeInMS - how many milliseconds should the track fade in for. default value: 250.
+# FadeOutMS - how many milliseconds should the track fade out for. default value: 250.
 
 # Scene tracks have an extra property:
-# ScenesPlayedAt - a list of scene names where this track should be played. you can look up scene names on the modding wiki (https://risk-of-thunder.github.io/R2Wiki/Mod-Creation/Developer-Reference/Scene-Names/)
+# ScenesPlayedAt - a list of scene names where this track should be played. 
+# You can look up scene names on the modding wiki (https://risk-of-thunder.github.io/R2Wiki/Mod-Creation/Developer-Reference/Scene-Names/)
 
 # Teleporter tracks have all the properties of a SceneTrack and also:
 # StatePlayedAt - state of the teleporter at which this track should be played. possible values are: Charging, FinishedCharging
@@ -26,13 +27,13 @@
 # BossName - name of the boss at whose fight this track should be played. possible values are: Mithrix, Voidling, False Son
 # PhasePlayedAt - phase of the boss at which this track should be played. 
 # Mithrix has 4 phases, Voidling has 3 phases, False Son has 3 phases.
-# Each boss has an extra phase under the number -1 that is considered the DeathPhase. It triggers when a boss dies.
+# Each boss has an extra phase under the number -1 that is considered the DeathPhase. it triggers when a boss dies.
 
 # You can define different types of tracks in any order. 
 # If you defined multiple tracks that share a scene or more, then these tracks will have a random chance to play when you enter that scene. 
 # You CAN define a TeleporterTrack and a SceneTrack that share a scene.
-# Below is a config template that, if provided the audio files, would be nearly identical to vanilla. There are no files.. yet.
-# In order to use the template, uncomment it by removing the double hash sings (##). You could use a replace tool that's available even in notepad.
+# Below is a config template that, if provided the audio files, would be nearly identical to vanilla. there are no files.. yet.
+# In order to use the template, uncomment it by removing the double hash sings (##). you could use a replace tool that's available even in notepad.
 
 # Custom path to the tracks you would be using instead of the default PluviaeCanticum/Tracks
 CustomTracksPath = ""

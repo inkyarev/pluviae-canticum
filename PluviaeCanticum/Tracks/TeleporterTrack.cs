@@ -5,7 +5,7 @@ namespace PluviaeCanticum.Tracks;
 
 public class TeleporterTrack : SceneTrack
 {
-    public TeleporterState StatePlayedAt { get; set; }
+    private TeleporterState StatePlayedAt { get; set; } = TeleporterState.Charging;
     public override bool MatchesConditions()
     {
         return FilePath != string.Empty && 

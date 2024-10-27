@@ -87,7 +87,6 @@ public class AudioProcessingHandler
             var tomlString = File.ReadAllText(settingsPath);
             _settings = TomletMain.To<Settings>(tomlString);
             _settings.Tracks = _settings.SceneTracks.Concat<Track>(_settings.TeleporterTracks).Concat(_settings.BossTracks).ToArray();
-            Log.Debug("count:"+_settings.Tracks.Length);
             
             if (_settings.CustomTracksPath != string.Empty)
             {
@@ -98,12 +97,10 @@ public class AudioProcessingHandler
             
             foreach (var track in _settings.Tracks)
             {
-                Log.Debug("name:"+track.Name);
                 if (!track.ExistsWithin(audioFiles))
                 {
                     Log.Error($"Found no file for track {track.Name}. This track will not be played.");
                 }
-                Log.Debug("path: "+track.FilePath);
             }
         } 
         catch (Exception e)
