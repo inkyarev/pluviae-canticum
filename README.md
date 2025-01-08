@@ -25,6 +25,6 @@ Install the mod, then open settings.toml. It should contain info needed for usin
 
 ## Other Info
 
-This mod uses NAudio.dll https://github.com/naudio/NAudio for loading, playing and processing audio at runtime.
+This mod uses [NAudio.dll](https://github.com/naudio/NAudio) for loading, playing and processing audio at runtime.
 This is done to make it very easy for players to supply their own tracks. The downside is that NAudio doesn't replace the in game audio, it just plays the audio on top of it. To get around this, this mod sets your in game
 music volume to 0. It tries to set it back to where it was when the game closes, but i haven't tested whether this actually works.
